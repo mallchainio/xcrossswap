@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xCrossSwap - Cross-Chain Swap Network</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #050816;
+    --bg2: #080d22;
+    --card: rgba(15, 23, 52, .72);
+    --border: rgba(111, 126, 255, .18);
+    --text: #f4f7ff;
+    --muted: #8d98b8;
+    --blue: #18bfff;
+    --purple: #7b4dff;
+    --cyan: #21e6ff;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(61, 76, 255, .18), transparent 35%),
+        radial-gradient(circle at 10% 40%, rgba(0, 190, 255, .08), transparent 30%),
+        var(--bg);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: min(1180px, calc(100% - 40px));
+    margin: auto;
+}
+
+/* =========================
+   Header
+========================= */
+
+.header {
+    height: 72px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    background: rgba(5, 8, 22, .78);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: white;
+    background: linear-gradient(135deg, #14d8ff, #2375ff 48%, #9a39ff);
+    box-shadow: 0 0 24px rgba(45, 142, 255, .3);
+}
+
+.logo span {
+    color: #fff;
+}
+
+.logo strong {
+    color: #25d5ff;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav a {
+    color: #aeb8d5;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav a:hover {
+    color: #fff;
+}
+
+.header-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #157fff, #7a3cff);
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 8px 25px rgba(55, 93, 255, .22);
+}
+
+/* =========================
+   Hero
+========================= */
+
+.hero {
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.hero-bg::before {
+    content: "";
+    position: absolute;
+    width: 550px;
+    height: 550px;
+    left: 50%;
+    top: 80px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(36, 132, 255, .13),
+        transparent 68%
+    );
+}
+
+.hero-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 70px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 650px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border: 1px solid rgba(49, 181, 255, .2);
+    border-radius: 30px;
+    background: rgba(20, 150, 255, .07);
+    color: #7fdfff;
+    font-size: 12px;
+    margin-bottom: 24px;
+}
+
+.badge-dot {
+    width: 7px;
+    height: 7px;
+    background: #26dcff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #26dcff;
+}
+
+.hero h1 {
+    font-size: clamp(46px, 7vw, 78px);
+    line-height: .98;
+    letter-spacing: -4px;
+    margin-bottom: 22px;
+}
+
+.gradient-text {
+    background: linear-gradient(
+        90deg,
+        #20dfff,
+        #4e8fff 42%,
+        #a64cff
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero-desc {
+    color: #99a5c5;
+    font-size: 18px;
+    max-width: 610px;
+    line-height: 1.8;
+    margin-bottom: 34px;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+}
+
+.btn {
+    min-width: 145px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    transition: .25s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #12caff, #426cff 55%, #8b3dff);
+    box-shadow: 0 10px 35px rgba(55, 113, 255, .28);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(55, 113, 255, .4);
+}
+
+.btn-secondary {
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.035);
+    color: #cdd5ed;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,.07);
+}
+
+/* =========================
+   Logo visual
+========================= */
+
+.hero-visual {
+    width: 410px;
+    height: 410px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.orbit {
+    position: absolute;
+    border: 1px solid rgba(50, 151, 255, .18);
+    border-radius: 50%;
+}
+
+.orbit-1 {
+    width: 350px;
+    height: 350px;
+    transform: rotate(55deg) scaleY(.35);
+}
+
+.orbit-2 {
+    width: 330px;
+    height: 330px;
+    transform: rotate(-45deg) scaleY(.35);
+}
+
+.orbit-3 {
+    width: 270px;
+    height: 270px;
+    transform: rotate(90deg) scaleY(.32);
+}
+
+.x-logo {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 25%, rgba(255,255,255,.15), transparent 25%),
+        linear-gradient(135deg, #071b47, #080a25 70%);
+    border: 1px solid rgba(79, 162, 255, .25);
+    box-shadow:
+        0 0 70px rgba(39, 107, 255, .2),
+        inset 0 0 50px rgba(65, 81, 255, .12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.x-mark {
+    font-size: 130px;
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1;
+    background: linear-gradient(
+        135deg,
+        #21e8ff,
+        #267fff 45%,
+        #a23dff
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 20px rgba(43, 142, 255, .35));
+}
+
+/* =========================
+   Stats
+========================= */
+
+.stats {
+    padding: 0 0 80px;
+}
+
+.stats-grid {
+    display: flex;
+    gap: 15px;
+}
+
+.stat {
+    flex: 1;
+    padding: 25px;
+    border: 1px solid var(--border);
+    background: rgba(12, 19, 45, .58);
+    border-radius: 16px;
+}
+
+.stat-number {
+    font-size: 27px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    color: #7783a5;
+    font-size: 13px;
+}
+
+/* =========================
+   Section
+========================= */
+
+.section {
+    padding: 100px 0;
+}
+
+.section-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 55px;
+}
+
+.section-label {
+    color: #4acfff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-size: clamp(30px, 5vw, 46px);
+    letter-spacing: -1.5px;
+    margin-bottom: 14px;
+}
+
+.section-desc {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+/* =========================
+   How it works
+========================= */
+
+.steps {
+    display: flex;
+    gap: 16px;
+}
+
+.step {
+    flex: 1;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 31, 70, .75),
+            rgba(7, 12, 29, .75)
+        );
+    position: relative;
+    overflow: hidden;
+}
+
+.step::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    right: -45px;
+    top: -45px;
+    border-radius: 50%;
+    background: rgba(57, 116, 255, .08);
+}
+
+.step-number {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #147fff, #783dff);
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+.step h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.step p {
+    color: #7f8aaa;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* =========================
+   Features
+========================= */
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.feature {
+    flex: 1 1 calc(33.333% - 16px);
+    min-width: 250px;
+    padding: 28px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: rgba(10, 17, 40, .68);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(41, 132, 255, .12);
+    border: 1px solid rgba(41, 132, 255, .16);
+    color: #42cfff;
+    font-size: 21px;
+    margin-bottom: 20px;
+}
+
+.feature h3 {
+    font-size: 17px;
+    margin-bottom: 9px;
+}
+
+.feature p {
+    color: #7d89a8;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* =========================
+   Network
+========================= */
+
+.network-box {
+    border-radius: 24px;
+    border: 1px solid rgba(77, 119, 255, .18);
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(45, 105, 255, .14),
+            transparent 55%
+        ),
+        rgba(10, 16, 37, .8);
+    padding: 55px;
+}
+
+.network-content {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+
+.network-text {
+    flex: 1;
+}
+
+.network-text h2 {
+    font-size: 36px;
+    line-height: 1.2;
+    margin-bottom: 17px;
+}
+
+.network-text p {
+    color: #8793b2;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.chains {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.chain {
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.09);
+    background: rgba(255,255,255,.035);
+    color: #c7d0e8;
+    font-size: 13px;
+}
+
+/* =========================
+   Relayer
+========================= */
+
+.relayer {
+    display: flex;
+    gap: 18px;
+}
+
+.relayer-card {
+    flex: 1;
+    padding: 32px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: rgba(11, 18, 42, .7);
+}
+
+.relayer-card h3 {
+    margin-bottom: 10px;
+    font-size: 19px;
+}
+
+.relayer-card p {
+    color: #808cab;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* =========================
+   Token
+========================= */
+
+.token-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 45px;
+    border-radius: 24px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(22, 80, 180, .15),
+            rgba(99, 42, 180, .12)
+        );
+    border: 1px solid rgba(91, 108, 255, .18);
+}
+
+.token-info {
+    flex: 1;
+}
+
+.token-symbol {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.token-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    background: linear-gradient(135deg, #17dfff, #833dff);
+}
+
+.token-symbol strong {
+    font-size: 25px;
+}
+
+.token-info p {
+    color: #8793b2;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.token-items {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.token-item {
+    min-width: 120px;
+    padding: 17px;
+    border-radius: 13px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.token-item span {
+    display: block;
+    color: #6f7b9a;
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+
+.token-item strong {
+    font-size: 14px;
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta {
+    text-align: center;
+    padding: 115px 20px;
+    position: relative;
+}
+
+.cta::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 250px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+        ellipse,
+        rgba(57, 86, 255, .14),
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+.cta h2 {
+    font-size: clamp(34px, 5vw, 52px);
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.cta p {
+    color: #818dab;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.cta .btn {
+    position: relative;
+}
+
+/* =========================
+   Footer
+========================= */
+
+.footer {
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 30px 0;
+    color: #697590;
+    font-size: 12px;
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 22px;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 900px) {
+
+    .nav {
+        display: none;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 85px 0;
+    }
+
+    .hero-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 760px;
+    }
+
+    .hero-desc {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        width: 330px;
+        height: 330px;
+    }
+
+    .x-logo {
+        width: 175px;
+        height: 175px;
+    }
+
+    .x-mark {
+        font-size: 105px;
+    }
+
+    .orbit-1 {
+        width: 285px;
+        height: 285px;
+    }
+
+    .orbit-2 {
+        width: 270px;
+        height: 270px;
+    }
+
+    .orbit-3 {
+        width: 220px;
+        height: 220px;
+    }
+
+    .steps {
+        flex-direction: column;
+    }
+
+    .network-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .token-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        width: min(100% - 26px, 1180px);
+    }
+
+    .header {
+        height: 64px;
+    }
+
+    .header-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .hero {
+        padding: 65px 0 55px;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+        letter-spacing: -2.5px;
+    }
+
+    .hero-desc {
+        font-size: 15px;
+    }
+
+    .hero-visual {
+        width: 290px;
+        height: 290px;
+    }
+
+    .x-logo {
+        width: 155px;
+        height: 155px;
+    }
+
+    .x-mark {
+        font-size: 90px;
+    }
+
+    .orbit-1 {
+        width: 250px;
+        height: 250px;
+    }
+
+    .orbit-2 {
+        width: 235px;
+        height: 235px;
+    }
+
+    .orbit-3 {
+        width: 190px;
+        height: 190px;
+    }
+
+    .stats-grid {
+        flex-direction: column;
+    }
+
+    .section {
+        padding: 75px 0;
+    }
+
+    .feature {
+        min-width: 100%;
+    }
+
+    .network-box {
+        padding: 30px 22px;
+    }
+
+    .network-text h2 {
+        font-size: 29px;
+    }
+
+    .relayer {
+        flex-direction: column;
+    }
+
+    .token-box {
+        padding: 30px 22px;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container header-inner">
+
+        <a href="#" class="logo">
+            <div class="logo-icon">X</div>
+            <span><strong>x</strong>CrossSwap</span>
+        </a>
+
+        <nav class="nav">
+            <a href="#how">How It Works</a>
+            <a href="#features">Features</a>
+            <a href="#network">Network</a>
+            <a href="#relayer">Relayer</a>
+            <a href="#token">XCS</a>
+        </nav>
+
+        <a href="#start" class="header-btn">
+            Launch App
+        </a>
+
+    </div>
+</header>
+
+
+<!-- Hero -->
+<section class="hero" id="start">
+
+    <div class="hero-bg"></div>
+
+    <div class="container hero-inner">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                <span class="badge-dot"></span>
+                Cross-Chain Swap Network
+            </div>
+
+            <h1>
+                Swap Across<br>
+                <span class="gradient-text">Every Chain</span>
+            </h1>
+
+            <p class="hero-desc">
+                xCrossSwap is a cross-chain swap network connecting
+                users and Relayers through an open order-based model.
+                Create a swap order, let a Relayer execute it,
+                and complete your cross-chain exchange.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">
+                    Launch xCrossSwap
+                </a>
+
+                <a href="#how" class="btn btn-secondary">
+                    Explore Network
+                </a>
+            </div>
+
+        </div>
+
+
+        <div class="hero-visual">
+
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-3"></div>
+
+            <div class="x-logo">
+                <div class="x-mark">X</div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Stats -->
+<section class="stats">
+
+    <div class="container stats-grid">
+
+        <div class="stat">
+            <div class="stat-number">Multi-Chain</div>
+            <div class="stat-label">Cross-chain asset exchange</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-number">P2P</div>
+            <div class="stat-label">Order-based execution model</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-number">XCS</div>
+            <div class="stat-label">Native ecosystem token</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Open swap network</div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- How it works -->
+<section class="section" id="how">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                HOW IT WORKS
+            </div>
+
+            <h2 class="section-title">
+                From Order to Settlement
+            </h2>
+
+            <p class="section-desc">
+                xCrossSwap connects swap users with Relayers.
+                Instead of relying on a single liquidity pool,
+                orders can be executed by independent network participants.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">01</div>
+
+                <h3>Create Order</h3>
+
+                <p>
+                    The user selects the source chain, target chain,
+                    assets and amount, then creates a cross-chain
+                    swap order.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">02</div>
+
+                <h3>Relayer Takes Order</h3>
+
+                <p>
+                    A Relayer monitors available orders and selects
+                    an order that matches its supported route and
+                    execution conditions.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">03</div>
+
+                <h3>Pre-Fund</h3>
+
+                <p>
+                    The Relayer provides the target-chain asset to
+                    the receiving address using its own available
+                    working capital.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">04</div>
+
+                <h3>Settlement</h3>
+
+                <p>
+                    Once the swap conditions are fulfilled,
+                    the source-chain asset is settled to the Relayer
+                    together with the applicable network reward.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Features -->
+<section class="section" id="features">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                NETWORK
+            </div>
+
+            <h2 class="section-title">
+                Built for Cross-Chain Liquidity
+            </h2>
+
+            <p class="section-desc">
+                A flexible order network designed for users,
+                liquidity providers and Relayers.
+            </p>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">↔</div>
+
+                <h3>Cross-Chain Swap</h3>
+
+                <p>
+                    Exchange assets between different blockchain
+                    networks without requiring users to manually
+                    navigate multiple platforms.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">◎</div>
+
+                <h3>Open Orders</h3>
+
+                <p>
+                    Users publish swap requirements while Relayers
+                    can independently choose orders according to
+                    their available liquidity.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">⚡</div>
+
+                <h3>Fast Execution</h3>
+
+                <p>
+                    Relayers compete to execute supported routes,
+                    allowing the network to develop more efficient
+                    execution paths.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">◈</div>
+
+                <h3>Multiple Chains</h3>
+
+                <p>
+                    The architecture is designed to support additional
+                    blockchain networks and asset routes as the
+                    ecosystem expands.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">⌁</div>
+
+                <h3>Non-Custodial Design</h3>
+
+                <p>
+                    Users do not need to deposit their assets into
+                    a centralized exchange account to create a swap.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">✦</div>
+
+                <h3>Open Participation</h3>
+
+                <p>
+                    Relayers can participate in supported routes
+                    and provide execution liquidity according to
+                    their own available capital.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Network -->
+<section class="section" id="network">
+
+    <div class="container">
+
+        <div class="network-box">
+
+            <div class="network-content">
+
+                <div class="network-text">
+
+                    <div class="section-label">
+                        MULTI-CHAIN
+                    </div>
+
+                    <h2>
+                        One Network.<br>
+                        Multiple Chains.
+                    </h2>
+
+                    <p>
+                        xCrossSwap is designed to connect different
+                        blockchain ecosystems through a unified swap
+                        order interface.
+                    </p>
+
+                </div>
+
+
+                <div class="chains">
+
+                    <div class="chain">Ethereum</div>
+                    <div class="chain">BNB Chain</div>
+                    <div class="chain">TRON</div>
+                    <div class="chain">Solana</div>
+                    <div class="chain">Arbitrum</div>
+                    <div class="chain">Base</div>
+                    <div class="chain">Polygon</div>
+                    <div class="chain">More Chains</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Relayer -->
+<section class="section" id="relayer">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                RELAYER NETWORK
+            </div>
+
+            <h2 class="section-title">
+                Liquidity Comes From Participants
+            </h2>
+
+            <p class="section-desc">
+                Relayers provide the working capital required to
+                execute cross-chain orders.
+            </p>
+
+        </div>
+
+
+        <div class="relayer">
+
+            <div class="relayer-card">
+
+                <h3>Provide Liquidity</h3>
+
+                <p>
+                    Relayers maintain supported assets on different
+                    chains and use their own liquidity to execute
+                    compatible orders.
+                </p>
+
+            </div>
+
+
+            <div class="relayer-card">
+
+                <h3>Choose Orders</h3>
+
+                <p>
+                    Relayers can select orders based on route,
+                    amount, execution requirements and expected
+                    return.
+                </p>
+
+            </div>
+
+
+            <div class="relayer-card">
+
+                <h3>Earn Rewards</h3>
+
+                <p>
+                    Completed orders can generate execution fees
+                    and network incentives for participating Relayers.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Token -->
+<section class="section" id="token">
+
+    <div class="container">
+
+        <div class="token-box">
+
+            <div class="token-info">
+
+                <div class="token-symbol">
+
+                    <div class="token-icon">
+                        X
+                    </div>
+
+                    <strong>XCS</strong>
+
+                </div>
+
+                <p>
+                    XCS is the native ecosystem token of xCrossSwap.
+                    It can be integrated into network incentives,
+                    Relayer rewards, community participation and
+                    future platform utilities.
+                </p>
+
+            </div>
+
+
+            <div class="token-items">
+
+                <div class="token-item">
+                    <span>Token</span>
+                    <strong>XCS</strong>
+                </div>
+
+                <div class="token-item">
+                    <span>Utility</span>
+                    <strong>Network Reward</strong>
+                </div>
+
+                <div class="token-item">
+                    <span>Network</span>
+                    <strong>Multi-Chain</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="cta">
+
+    <div class="container">
+
+        <h2>
+            Enter the Cross-Chain Network
+        </h2>
+
+        <p>
+            Create an order. Execute a swap. Connect liquidity.
+        </p>
+
+        <a href="#" class="btn btn-primary">
+            Launch xCrossSwap
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- Footer -->
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div>
+            © 2026 xCrossSwap. All rights reserved.
+        </div>
+
+        <div class="footer-links">
+            <a href="#">X</a>
+            <a href="https://t.me/xCrossSwap">Telegram</a>
+            <a href="#">Docs</a>
+            <a href="https://t.me/xCrossSwapBot">Contract</a>
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+  </html>
